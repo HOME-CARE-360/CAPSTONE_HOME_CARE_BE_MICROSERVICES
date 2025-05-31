@@ -3,11 +3,12 @@ kind: Ingress
 metadata:
   name: homecare360
 spec:
+  ingressClassName: gce
   rules:
     - http:
         paths:
-          - path: /auth/*
-            pathType: ImplementationSpecific
+          - path: /auth
+            pathType: Prefix
             backend:
               service:
                 name: auth-http

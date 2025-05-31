@@ -65,6 +65,9 @@ importers:
       googleapis:
         specifier: ^148.0.0
         version: 148.0.0
+      mime-types:
+        specifier: ^3.0.1
+        version: 3.0.1
       ms:
         specifier: ^2.1.3
         version: 2.1.3

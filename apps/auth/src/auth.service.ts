@@ -45,10 +45,11 @@ import { EmailService } from 'libs/common/src/services/email.service'
 import { TwoFactorService } from 'libs/common/src/services/2fa.service'
 import { SharedRoleRepository } from 'libs/common/src/repositories/shared-role.repo'
 import { TypeOfVerificationCode, TypeOfVerificationCodeType } from 'libs/common/src/constants/auth.constant'
-import envConfig from './config'
+
 import { AccessTokenPayloadCreate } from 'libs/common/src/types/jwt.type'
 import { VerificationStatusConst } from 'libs/common/src/constants/common.constants'
 import { generateOTP, isNotFoundPrismaError, isUniqueConstraintPrismaError } from 'libs/common/helpers'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class AuthService {
@@ -60,6 +61,7 @@ export class AuthService {
         private readonly emailService: EmailService,
         private readonly twoFactorService: TwoFactorService,
         private readonly rolesService: SharedRoleRepository,
+        private configService: ConfigService
     ) { }
 
     async validateVerificationCode({
@@ -140,7 +142,7 @@ export class AuthService {
             email: body.email,
             type: body.type,
             code,
-            expiresAt: addMilliseconds(new Date(), ms(envConfig.OTP_EXPIRES_IN)),
+            expiresAt: addMilliseconds(new Date(), ms(this.configService.get("OTP_EXPIRES_IN"))),
         })
 
         const { error } = await this.emailService.sendOTP({ email: body.email, otp: code })

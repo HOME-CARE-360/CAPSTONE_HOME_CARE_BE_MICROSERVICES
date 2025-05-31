@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import * as OTPAuth from 'otpauth'
-import envConfig from './config'
+
 
 
 @Injectable()
 export class TwoFactorService {
+    constructor(private configService: ConfigService) { }
     private createTOTP(email: string, secret?: string) {
         return new OTPAuth.TOTP({
-            issuer: envConfig.APP_NAME,
+            issuer: this.configService.get("APP_NAME"),
             label: email,
             algorithm: 'SHA1',
             digits: 6,

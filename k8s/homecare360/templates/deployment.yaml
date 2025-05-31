@@ -20,9 +20,9 @@ spec:
           imagePullPolicy: Always
           env:
             - name: PORT
-              value: '3000'
+              value: '3001'
           envFrom:
             - secretRef:
                 name: auth-secret
           ports:
-            - containerPort: 3000
+            - containerPort: 3001

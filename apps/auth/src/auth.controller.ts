@@ -8,16 +8,17 @@ import { GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, RegisterBodyDTO, 
 import { GoogleService } from './google.service';
 
 
-import envConfig from './config';
+
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
 import { Response } from "express"
+import { ConfigService } from '@nestjs/config';
 
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly googleService: GoogleService) { }
+  constructor(private readonly authService: AuthService, private readonly googleService: GoogleService, private configService: ConfigService) { }
   @Post('register')
   @IsPublic()
   @ZodSerializerDto(RegisterResDTO)
@@ -86,14 +87,14 @@ export class AuthController {
         state,
       })
       return res.redirect(
-        `${envConfig.GOOGLE_CLIENT_REDIRECT_URI}?accessToken=${data.accessToken}&refreshToken=${data.refreshToken}`,
+        `${this.configService.get("GOOGLE_CLIENT_REDIRECT_URI")}?accessToken=${data.accessToken}&refreshToken=${data.refreshToken}`,
       )
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
           : 'Đã xảy ra lỗi khi đăng nhập bằng Google, vui lòng thử lại bằng cách khác'
-      return res.redirect(`${envConfig.GOOGLE_CLIENT_REDIRECT_URI}?errorMessage=${message}`)
+      return res.redirect(`${this.configService.get("GOOGLE_CLIENT_REDIRECT_URI")}?errorMessage=${message}`)
     }
   }
   @Post('register-provider')

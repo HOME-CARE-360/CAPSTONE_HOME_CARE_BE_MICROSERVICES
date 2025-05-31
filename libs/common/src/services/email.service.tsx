@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Resend } from 'resend';
-import envConfig from './config';
+
 import OTPEmail from '../emails/otp';
 import * as React from 'react';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class EmailService {
   private resend: Resend;
-  constructor() {
-    this.resend = new Resend(envConfig.RESEND_API_KEY);
+  constructor(private configService: ConfigService) {
+    this.resend = new Resend(this.configService.get('RESEND_API_KEY'));
   }
   async sendOTP(payload: { email: string; otp: string }) {
     // const otpTemplate = fs.readFileSync(path.resolve("src/shared/email-templates/otp.html"), { encoding: "utf-8" })

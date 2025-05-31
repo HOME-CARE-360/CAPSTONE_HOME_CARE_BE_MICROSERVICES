@@ -7,11 +7,12 @@ import { v4 as uuidv4 } from 'uuid'
 import { AuthReponsitory } from './auth.repo'
 
 import { AuthService } from './auth.service'
-import envConfig from './config'
+
 import { GoogleAuthStateType } from './auth.model'
 import { GoogleUserInfoError } from './auth.error'
 import { HashingService } from 'libs/common/src/services/hashing.service'
 import { SharedRoleRepository } from 'libs/common/src/repositories/shared-role.repo'
+import { ConfigService } from '@nestjs/config'
 
 
 @Injectable()
@@ -22,11 +23,12 @@ export class GoogleService {
     private readonly hashingService: HashingService,
     private readonly sharedRoleRepository: SharedRoleRepository,
     private readonly authService: AuthService,
+    private configService: ConfigService
   ) {
     this.oauth2Client = new OAuth2Client({
-      clientId: envConfig.GOOGLE_CLIENT_ID,
-      clientSecret: envConfig.GOOGLE_CLIENT_SECRET,
-      redirectUri: envConfig.GOOGLE_REDIRECT_URI,
+      clientId: this.configService.get("GOOGLE_CLIENT_ID"),
+      clientSecret: this.configService.get("GOOGLE_CLIENT_SECRET"),
+      redirectUri: this.configService.get("GOOGLE_REDIRECT_URI"),
     }
 
 

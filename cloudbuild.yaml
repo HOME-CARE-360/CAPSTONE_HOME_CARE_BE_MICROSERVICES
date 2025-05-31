@@ -9,16 +9,15 @@ steps:
         'apps/auth/Dockerfile',
         '.',
       ]
-
   - name: 'gcr.io/cloud-builders/docker'
     args:
       ['push', 'asia-southeast1-docker.pkg.dev/home-care-360/auth/production']
-  - name: 'gcr.io/cloud-builders/helm'
-    args: ['upgrade', 'homecare360', '.', '--namespace', 'default']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['rollout', 'restart', 'deployment/auth']
     env:
-      - 'CLOUDSDK_COMPUTE_ZONE=asia-southeast1'
+      - 'CLOUDSDK_COMPUTE_REGION=asia-southeast1'
       - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
-    id: restart-auth
+      - 'CLOUDSDK_CORE_PROJECT=home-care-360'
 
 options:
   logging: CLOUD_LOGGING_ONLY

@@ -1,15 +1,18 @@
-import z from 'zod'
-import fs from 'fs'
-import path from 'path'
-import { config } from 'dotenv'
+import z from 'zod';
+import fs from 'fs';
+import path from 'path';
+import { config } from 'dotenv';
 
-config({
-    path: '.env',
-})
-// Kiểm tra coi thử có file .env hay chưa
-if (!fs.existsSync(path.resolve('.env'))) {
-    console.log('Không tìm thấy file .env')
-    process.exit(1)
+const envPath = path.resolve(process.cwd(), '.env');
+
+// Nếu không phải production thì load .env từ file
+if (process.env.NODE_ENV !== 'production') {
+    if (!fs.existsSync(envPath)) {
+        console.log('Không tìm thấy file .env tại:', envPath);
+        process.exit(1);
+    }
+
+    config({ path: envPath });
 }
 
 const configSchema = z.object({
@@ -34,18 +37,16 @@ const configSchema = z.object({
     S3_ACCESS_KEY: z.string(),
     S3_SECRET_KEY: z.string(),
     S3_BUCKET_NAME: z.string(),
-    S3_ENPOINT: z.string()
+    S3_ENPOINT: z.string(),
+});
 
-})
-
-const configServer = configSchema.safeParse(process.env)
+const configServer = configSchema.safeParse(process.env);
 
 if (!configServer.success) {
-    console.log('Các giá trị khai báo trong file .env không hợp lệ')
-    console.error(configServer.error)
-    process.exit(1)
+    console.error('❌ Các giá trị khai báo trong biến môi trường không hợp lệ');
+    console.error(configServer.error.format());
+    process.exit(1);
 }
 
-const envConfig = configServer.data
-
-export default envConfig
+const envConfig = configServer.data;
+export default envConfig;

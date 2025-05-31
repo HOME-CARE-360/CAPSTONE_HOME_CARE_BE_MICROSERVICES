@@ -15,5 +15,5 @@ export class AIService {
         }
     }
 }
-const run = new AIService()
-run.createAIModel()
+// const run = new AIService()
+// run.createAIModel()

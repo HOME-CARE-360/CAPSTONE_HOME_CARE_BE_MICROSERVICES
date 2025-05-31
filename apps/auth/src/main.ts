@@ -6,6 +6,8 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
   const configService = app.get(ConfigService)
+  app.enableCors({});
+
   app.connectMicroservice({
     transport: Transport.TCP,
     options: {
@@ -14,7 +16,7 @@ async function bootstrap() {
     }
   })
   await app.startAllMicroservices()
-  await app.listen(configService.get("AUTH_PORT") as string);
+  await app.listen(configService.get("AUTH_PORT") as string, "0.0.0.0");
   console.log(`🚀 App listening on port ${process.env.AUTH_PORT as string}`);
 }
 bootstrap();

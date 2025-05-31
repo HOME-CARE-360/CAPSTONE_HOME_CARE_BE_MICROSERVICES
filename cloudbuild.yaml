@@ -9,8 +9,16 @@ steps:
         'apps/auth/Dockerfile',
         '.',
       ]
+
   - name: 'gcr.io/cloud-builders/docker'
     args:
       ['push', 'asia-southeast1-docker.pkg.dev/home-care-360/auth/production']
+  - name: 'gcr.io/cloud-builders/helm'
+    args: ['upgrade', 'homecare360', '.', '--namespace', 'default']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=asia-southeast1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
+    id: restart-auth
+
 options:
   logging: CLOUD_LOGGING_ONLY

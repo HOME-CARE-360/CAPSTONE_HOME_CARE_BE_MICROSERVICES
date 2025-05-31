@@ -17,6 +17,7 @@ spec:
       containers:
         - image: asia-southeast1-docker.pkg.dev/home-care-360/auth/production
           name: auth
+          imagePullPolicy: Always
           env:
             - name: PORT
               value: '3000'

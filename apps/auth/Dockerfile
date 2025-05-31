@@ -1,42 +1,46 @@
+# ---------- Development Stage ----------
+    FROM node:alpine AS development
 
-
-FROM node:alpine As development
-
-WORKDIR /usr/src/app
-
-COPY package.json ./
-COPY pnpm-lock.yaml ./
-COPY tsconfig.json tsconfig.json
-COPY nest-cli.json nest-cli.json
-
-RUN npm install -g pnpm
-
-
-
-COPY apps/auth apps/auth
-COPY libs libs
-COPY prisma ./prisma
-RUN pnpm install -r
-RUN  pnpm exec prisma generate \
-  && echo "--- Check .prisma build output:" \
-  && ls -la node_modules/.prisma/client || echo "⚠️ NO .prisma client generated"
-
-RUN pnpm run build auth
-
-FROM node:alpine as production
-
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /usr/src/app
-
-COPY package.json ./
-COPY pnpm-lock.yaml ./
-
-RUN npm install -g pnpm
-
-RUN pnpm install --prod
-
-COPY --from=development /usr/src/app/dist ./dist
-
-CMD ["node", "dist/apps/auth/main"]
+    WORKDIR /usr/src/app
+    
+    # Copy root-level config
+    COPY package.json ./
+    COPY pnpm-lock.yaml ./
+    COPY nest-cli.json ./
+    COPY tsconfig.build.json ./
+    COPY tsconfig.json ./
+    
+    # Install dependencies
+    RUN npm install -g pnpm
+    RUN pnpm install
+    
+    # Copy full monorepo (context phải là thư mục root!)
+    COPY apps apps
+    COPY libs libs
+    COPY prisma prisma
+    
+    # Generate Prisma client (if needed)
+    RUN pnpm exec prisma generate
+    
+    # Build only `auth` service
+    RUN pnpm run build auth
+    
+    # ---------- Production Stage ----------
+    FROM node:alpine AS production
+    
+    ARG NODE_ENV=production
+    ENV NODE_ENV=${NODE_ENV}
+    
+    WORKDIR /usr/src/app
+    
+    COPY package.json ./
+    COPY pnpm-lock.yaml ./
+    RUN npm install -g pnpm
+    RUN pnpm install --prod
+    
+    # Copy built dist + Prisma client
+    COPY --from=development /usr/src/app/dist ./dist
+    COPY --from=development /usr/src/app/node_modules ./node_modules
+    
+    CMD ["node", "dist/apps/auth/main"]
+    

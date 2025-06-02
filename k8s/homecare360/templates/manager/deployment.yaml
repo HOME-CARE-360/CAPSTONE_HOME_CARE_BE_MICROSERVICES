@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: manager
+  name: manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manager
+  template:
+    metadata:
+      labels:
+        app: manager
+    spec:
+      containers:
+        - image: asia-southeast1-docker.pkg.dev/home-care-360/manager/production
+          name: manager
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: auth-secret
+          ports:
+            - containerPort: 3003
+            - containerPort: 3004

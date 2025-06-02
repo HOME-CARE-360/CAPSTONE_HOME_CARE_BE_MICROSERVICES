@@ -8,7 +8,7 @@
     COPY nest-cli.json ./
     COPY tsconfig.build.json ./
     COPY tsconfig.json ./
-    
+    COPY ../../proto ./proto
     RUN npm install -g pnpm
     RUN pnpm install
     
@@ -29,12 +29,12 @@
     
     COPY package.json ./
     COPY pnpm-lock.yaml ./
+    COPY ../../proto ./proto
     RUN npm install -g pnpm
     RUN pnpm install --prod
     
 
     COPY --from=development /usr/src/app/dist ./dist
-    COPY --from=development /usr/src/app/node_modules ./node_modules
     
     CMD ["node", "dist/apps/manager/main"]
     

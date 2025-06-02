@@ -6,6 +6,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
+import { CommonModule } from 'libs/common/src';
+import { ConfigModule } from 'libs/common/src/modules/config.module';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
         }),
         inject: [ConfigService],
       },
-    ])],
+    ]), CommonModule, ConfigModule],
   controllers: [ManagersController],
   providers: [ManagersService, ManagerRepository],
 })

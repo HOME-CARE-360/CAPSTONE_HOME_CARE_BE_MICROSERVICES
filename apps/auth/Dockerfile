@@ -6,9 +6,7 @@
     COPY pnpm-lock.yaml ./
     COPY nest-cli.json ./
     COPY tsconfig.build.json ./
-    COPY tsconfig.json ./
-    COPY ../../proto ./proto
-    
+    COPY tsconfig.json ./    
     RUN npm install -g pnpm
     RUN pnpm install
     
@@ -31,9 +29,8 @@
     COPY pnpm-lock.yaml ./
     RUN npm install -g pnpm
     RUN pnpm install --prod
-    COPY ../../proto ./proto
     
     COPY --from=development /usr/src/app/dist ./dist
-    
+    COPY proto proto
     CMD ["node", "dist/apps/auth/main"]
     

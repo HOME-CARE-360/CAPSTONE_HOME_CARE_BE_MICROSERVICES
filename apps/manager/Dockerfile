@@ -9,13 +9,15 @@
     COPY tsconfig.build.json ./
     COPY tsconfig.json ./
     RUN npm install -g pnpm
+
+    COPY prisma prisma
     RUN pnpm install
-    
+    RUN pnpm exec prisma generate
     COPY apps/manager apps/manager
     COPY libs libs
-    COPY prisma prisma
+
     
-    RUN pnpm exec prisma generate
+ 
     
     RUN pnpm run build manager
     
@@ -33,7 +35,6 @@
     
 
     COPY --from=development /usr/src/app/dist ./dist
-    COPY --from=development /usr/src/app/node_modules ./node_modules
     COPY proto proto
     CMD ["node", "dist/apps/manager/main"]
     

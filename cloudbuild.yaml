@@ -25,7 +25,7 @@ steps:
         '-t',
         'asia-southeast1-docker.pkg.dev/home-care-360/manager/production',
         '-f',
-        'apps/auth/Dockerfile',
+        'apps/manager/Dockerfile',
         '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'

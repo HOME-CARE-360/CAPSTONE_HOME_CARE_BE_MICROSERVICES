@@ -3,7 +3,8 @@ import { AuthModule } from './auth.module';
 import { Transport } from "@nestjs/microservices"
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
-import { AUTH_PACKAGE_NAME } from 'libs/common/src/types/auth';
+import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
@@ -13,7 +14,7 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.GRPC,
     options: {
-      package: AUTH_PACKAGE_NAME,
+      package: AUTH_SERVICE,
       protoPath: join(__dirname, '../../../proto/auth.proto'),
       url: configService.getOrThrow('AUTH_GRPC_URL'),
     },

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package auth;
+
+
+service AuthService {
+  rpc Authenticate (AccessTokenRequest) returns (AccessTokenPayload) {}
+}
+
+message AccessTokenRequest {
+  string accessToken = 1;
+}
+
+
+
+
+message RoleMessage {
+  int32 id = 1;
+  string name = 2;
+}
+
+message AccessTokenPayload {
+  int32 userId = 1;
+  int32 deviceId = 2;
+  int32 providerId = 3;
+  int32 staffProviderId = 4;
+  repeated RoleMessage roles = 5;
+  int64 exp = 6;
+  int64 iat = 7;
+}

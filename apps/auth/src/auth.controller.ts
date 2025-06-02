@@ -14,6 +14,7 @@ import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
 import { Response } from "express"
 import { ConfigService } from '@nestjs/config';
+import { Payload } from '@nestjs/microservices';
 
 
 @Controller('auth')
@@ -103,6 +104,15 @@ export class AuthController {
   async registerProvider(@Body() body: RegisterProviderBodyDto) {
     return await this.authService.registerProvider(body)
 
+  }
+  authenticate(@Payload() data: any) {
+    console.log(data);
+    console.log("hihi");
+
+    return {
+      ...data.user,
+      id: data.user._id,
+    };
   }
 
 }

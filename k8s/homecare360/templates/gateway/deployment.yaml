@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gateway
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - image: asia-southeast1-docker.pkg.dev/home-care-360/gateway/production
+          name: gateway
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: auth-secret
+          ports:
+            - containerPort: 3000

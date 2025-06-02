@@ -12,7 +12,7 @@
 
     COPY prisma prisma
     RUN pnpm install
-    RUN pnpm exec prisma generate
+    RUN pnpm prisma generate
     COPY apps/manager apps/manager
     COPY libs libs
 
@@ -36,5 +36,6 @@
 
     COPY --from=development /usr/src/app/dist ./dist
     COPY proto proto
+    COPY prisma prisma
     CMD ["node", "dist/apps/manager/main"]
     

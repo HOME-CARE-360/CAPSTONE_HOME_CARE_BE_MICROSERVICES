@@ -12,7 +12,7 @@ RUN npm install -g pnpm
 
 COPY prisma prisma
 RUN pnpm install
-RUN pnpm exec prisma generate
+RUN pnpm prisma generate
 COPY apps/auth apps/auth
 COPY libs libs
 
@@ -35,5 +35,6 @@ RUN pnpm install --prod
 
 
 COPY --from=development /usr/src/app/dist ./dist
+COPY prisma prisma
 COPY proto proto
 CMD ["node", "dist/apps/auth/main"]

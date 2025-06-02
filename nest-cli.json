@@ -25,6 +25,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "gateway": {
+      "type": "application",
+      "root": "apps/gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gateway/tsconfig.app.json"
+      }
+    },
+    "manager": {
+      "type": "application",
+      "root": "apps/manager",
+      "entryFile": "main",
+      "sourceRoot": "apps/manager/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/manager/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,

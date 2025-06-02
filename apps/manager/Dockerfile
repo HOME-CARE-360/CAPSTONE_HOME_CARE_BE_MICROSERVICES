@@ -1,3 +1,4 @@
+
     FROM node:alpine AS development
 
     WORKDIR /usr/src/app
@@ -11,13 +12,13 @@
     RUN npm install -g pnpm
     RUN pnpm install
     
-    COPY apps apps
+    COPY apps/manager apps/manager
     COPY libs libs
     COPY prisma prisma
     
     RUN pnpm exec prisma generate
     
-    RUN pnpm run build auth
+    RUN pnpm run build manager
     
     FROM node:alpine AS production
     
@@ -31,8 +32,9 @@
     RUN npm install -g pnpm
     RUN pnpm install --prod
     
+
     COPY --from=development /usr/src/app/dist ./dist
     COPY --from=development /usr/src/app/node_modules ./node_modules
     
-    CMD ["node", "dist/apps/auth/main"]
+    CMD ["node", "dist/apps/manager/main"]
     

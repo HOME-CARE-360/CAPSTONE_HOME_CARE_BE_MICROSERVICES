@@ -13,6 +13,9 @@ import {
     SendOTPBodySchema,
 } from "./auth.model";
 
+
+
+
 export class RegisterBodyDTO extends createZodDto(RegisterBodySchema) { }
 export class RegisterResDTO extends createZodDto(RegisterResSchema) { }
 

@@ -18,7 +18,9 @@ export const envSchema = z.object({
 
     PAYMENT_API_KEY: z.string(),
     RESEND_API_KEY: z.string(),
+    MANAGER_HTTP_PORT: z.string(),
 
+    MANAGER_TCP_PORT: z.string(),
     OTP_EXPIRES_IN: z.string().trim(),
 
     GOOGLE_CLIENT_ID: z.string(),

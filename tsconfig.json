@@ -5,7 +5,11 @@
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
-    "plugins": [{ "name": "zod-to-ts-plugin" }],
+    "plugins": [
+      {
+        "name": "zod-to-ts-plugin"
+      }
+    ],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
@@ -19,15 +23,21 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-
     "esModuleInterop": true,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {}
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": [
+      "tsconfig-paths/register"
+    ]
   },
   "paths": {
-    "@app/common": ["libs/common/src"],
-    "@app/common/*": ["libs/common/src/*"]
+    "@app/common": [
+      "libs/common/src"
+    ],
+    "@app/common/*": [
+      "libs/common/src/*"
+    ]
   }
 }

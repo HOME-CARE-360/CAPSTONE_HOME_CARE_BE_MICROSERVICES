@@ -31,6 +31,7 @@
     RUN pnpm install --prod
     
     COPY --from=development /usr/src/app/dist ./dist
+    COPY --from=development /usr/src/app/node_modules ./node_modules
     COPY proto proto
     CMD ["node", "dist/apps/auth/main"]
     

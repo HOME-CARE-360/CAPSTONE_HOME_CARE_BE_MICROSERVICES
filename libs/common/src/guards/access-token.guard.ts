@@ -3,7 +3,7 @@ import { TokenService } from '../services/token.service';
 import { REQUEST_USER_KEY } from '../constants/auth.constant';
 import { AccessTokenPayload } from '../types/jwt.type';
 import { PrismaService } from '../services/prisma.service';
-import { HTTPMethod } from 'prisma/generated/clientPg';
+import { HTTPMethod } from '@prisma/clientPg';
 
 @Injectable()
 export class AccessTokenGuard implements CanActivate {

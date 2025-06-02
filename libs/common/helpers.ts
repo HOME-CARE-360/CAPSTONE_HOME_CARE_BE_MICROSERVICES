@@ -1,4 +1,4 @@
-import { Prisma, WeekDay } from '@prisma/client'
+import { Prisma, WeekDay } from 'prisma/generated/clientPg'
 import { randomInt } from 'crypto'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'

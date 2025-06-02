@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/clientPg"
+  output   = "./generated/clientPg"
 }
 
 datasource db {
@@ -210,21 +210,20 @@ model CustomerProfile {
 }
 
 model Staff {
-  id              Int             @id @default(autoincrement())
-  userId          Int             @unique
-  providerId      Int
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  bookingStaffs   BookingStaff[]
-  reviews         Review[]
-  serviceProvider ServiceProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  inspectedBookings Booking[] @relation("BookingInspectedBy")
-  staffCategories StaffCategory[]
-    shiftAssignments StaffShiftAssignment[]
-  workLogs        WorkLog[]
-   timeOffRequests TimeOffRequest[]
-
+  id                Int                    @id @default(autoincrement())
+  userId            Int                    @unique
+  providerId        Int
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  bookingStaffs     BookingStaff[]
+  reviews           Review[]
+  serviceProvider   ServiceProvider        @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inspectedBookings Booking[]              @relation("BookingInspectedBy")
+  staffCategories   StaffCategory[]
+  shiftAssignments  StaffShiftAssignment[]
+  workLogs          WorkLog[]
+  timeOffRequests   TimeOffRequest[]
 }
 
 model StaffCategory {
@@ -267,65 +266,66 @@ model ServiceProvider {
   verifiedBy          User?                        @relation("VerifiedProviders", fields: [verifiedById], references: [id])
   translationsService ServiceProviderTranslation[]
   staff               Staff[]
-    shiftTemplates  WorkShiftTemplate[]
-  config          ServiceProviderConfig?
+  shiftTemplates      WorkShiftTemplate[]
+  config              ServiceProviderConfig?
 }
 
 model Category {
-  id                 Int                   @id @default(autoincrement())
-  name               String                @db.VarChar(500)
-  logo               String?               @db.VarChar(1000)
-  parentCategoryId   Int?
-  createdById        Int?
-  updatedById        Int?
-  deletedById        Int?
-  deletedAt          DateTime?
-  createdAt          DateTime              @default(now())
-  updatedAt          DateTime              @updatedAt
-  createdBy          User?                 @relation("CategoryCreatedBy", fields: [createdById], references: [id])
-  deletedBy          User?                 @relation("CategoryDeletedBy", fields: [deletedById], references: [id])
-  parentCategory     Category?             @relation("ParentCategoryCategories", fields: [parentCategoryId], references: [id])
-  childrenCategories Category[]            @relation("ParentCategoryCategories")
-  updatedBy          User?                 @relation("CategoryUpdatedBy", fields: [updatedById], references: [id])
-  translations       CategoryTranslation[]
-  staffCategories    StaffCategory[]
-  services           Service[]             @relation("ServiceCategories")
+  id                    Int                                    @id @default(autoincrement())
+  name                  String                                 @db.VarChar(500)
+  logo                  String?                                @db.VarChar(1000)
+  parentCategoryId      Int?
+  createdById           Int?
+  updatedById           Int?
+  deletedById           Int?
+  deletedAt             DateTime?
+  createdAt             DateTime                               @default(now())
+  updatedAt             DateTime                               @updatedAt
+  createdBy             User?                                  @relation("CategoryCreatedBy", fields: [createdById], references: [id])
+  deletedBy             User?                                  @relation("CategoryDeletedBy", fields: [deletedById], references: [id])
+  parentCategory        Category?                              @relation("ParentCategoryCategories", fields: [parentCategoryId], references: [id])
+  childrenCategories    Category[]                             @relation("ParentCategoryCategories")
+  updatedBy             User?                                  @relation("CategoryUpdatedBy", fields: [updatedById], references: [id])
+  translations          CategoryTranslation[]
+  staffCategories       StaffCategory[]
+  services              Service[]                              @relation("ServiceCategories")
   workShiftRequirements WorkShiftTemplateCategoryRequirement[]
 
   @@index([deletedAt])
 }
 
 model Service {
-  id                Int                  @id @default(autoincrement())
-  basePrice         Float
-  virtualPrice      Float
-  images            String[]
-  durationMinutes   Int
-  providerId        Int
-  createdById       Int?
-  updatedById       Int?
-  deletedById       Int?
-  deletedAt         DateTime?
-  createdAt         DateTime             @default(now())
-  updatedAt         DateTime             @updatedAt
-  name              String               @default("test") @db.VarChar(100)
-  publishedAt       DateTime?            @default(now())
-  description       String               @default("test description") @db.VarChar(100)
-  bookings          Booking[]
-  bookingServices   BookingServiceItem[]
-  recurringBookings RecurringBooking[]
-  reviews           Review[]
-    proposedInBookings ProposedService[] 
-  createdBy         User?                @relation("ServiceCreatedBy", fields: [createdById], references: [id])
-  deletedBy         User?                @relation("ServiceDeletedBy", fields: [deletedById], references: [id])
-  provider          ServiceProvider      @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  updatedBy         User?                @relation("ServiceUpdatedBy", fields: [updatedById], references: [id])
-  translations      ServiceTranslation[]
-  serviceItems      ServicePackageItem[] 
-  categories        Category[]           @relation("ServiceCategories")
+  id                 Int                  @id @default(autoincrement())
+  basePrice          Float
+  virtualPrice       Float
+  images             String[]
+  durationMinutes    Int
+  providerId         Int
+  createdById        Int?
+  updatedById        Int?
+  deletedById        Int?
+  deletedAt          DateTime?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  name               String               @default("test") @db.VarChar(100)
+  publishedAt        DateTime?            @default(now())
+  description        String               @default("test description") @db.VarChar(100)
+  bookings           Booking[]
+  bookingServices    BookingServiceItem[]
+  recurringBookings  RecurringBooking[]
+  reviews            Review[]
+  proposedInBookings ProposedService[]
+  createdBy          User?                @relation("ServiceCreatedBy", fields: [createdById], references: [id])
+  deletedBy          User?                @relation("ServiceDeletedBy", fields: [deletedById], references: [id])
+  provider           ServiceProvider      @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  updatedBy          User?                @relation("ServiceUpdatedBy", fields: [updatedById], references: [id])
+  translations       ServiceTranslation[]
+  serviceItems       ServicePackageItem[]
+  categories         Category[]           @relation("ServiceCategories")
 
   @@index([deletedAt])
 }
+
 model WorkShiftTemplate {
   id         Int      @id @default(autoincrement())
   providerId Int
@@ -336,13 +336,15 @@ model WorkShiftTemplate {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  provider    ServiceProvider       @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  assignments StaffShiftAssignment[]
-categoryRequirements WorkShiftTemplateCategoryRequirement[]
+  provider             ServiceProvider                        @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  assignments          StaffShiftAssignment[]
+  categoryRequirements WorkShiftTemplateCategoryRequirement[]
+
   @@unique([providerId, day, session])
 }
+
 model StaffShiftAssignment {
-  id              Int                @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   staffId         Int
   shiftTemplateId Int
   effectiveFrom   DateTime
@@ -353,22 +355,24 @@ model StaffShiftAssignment {
 
   @@unique([staffId, shiftTemplateId, effectiveFrom])
 }
-model WorkShiftTemplateCategoryRequirement {
-  id               Int              @id @default(autoincrement())
-  shiftTemplateId  Int
-  categoryId       Int
-  requiredStaff    Int              @default(1)
 
-  shiftTemplate    WorkShiftTemplate @relation(fields: [shiftTemplateId], references: [id], onDelete: Cascade)
-  category         Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+model WorkShiftTemplateCategoryRequirement {
+  id              Int @id @default(autoincrement())
+  shiftTemplateId Int
+  categoryId      Int
+  requiredStaff   Int @default(1)
+
+  shiftTemplate WorkShiftTemplate @relation(fields: [shiftTemplateId], references: [id], onDelete: Cascade)
+  category      Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([shiftTemplateId, categoryId])
 }
+
 model ServiceProviderConfig {
-  id               Int     @id @default(autoincrement())
-  providerId       Int     @unique
-  maxShiftsPerDay  Int     @default(2)
-  maxShiftsPerWeek Int     @default(10)
+  id               Int      @id @default(autoincrement())
+  providerId       Int      @unique
+  maxShiftsPerDay  Int      @default(2)
+  maxShiftsPerWeek Int      @default(10)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
@@ -376,69 +380,66 @@ model ServiceProviderConfig {
 }
 
 model TimeOffRequest {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   staffId   Int
   fromDate  DateTime
   toDate    DateTime
   reason    String?
   status    TimeOffStatus @default(PENDING)
-  createdAt DateTime @default(now())
+  createdAt DateTime      @default(now())
 
-  staff     Staff    @relation(fields: [staffId], references: [id])
+  staff Staff @relation(fields: [staffId], references: [id])
 
   @@index([fromDate, toDate])
 }
 
-
 model Booking {
-  id                    Int                     @id @default(autoincrement())
-  customerId            Int
-  serviceId             Int
-  providerId            Int
-  status                BookingStatus
-  date                  DateTime
-  note                  String?
-  createdById           Int?
-  updatedById           Int?
-  deletedById           Int?
-  deletedAt             DateTime?
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
+  id          Int           @id @default(autoincrement())
+  customerId  Int
+  serviceId   Int
+  providerId  Int
+  status      BookingStatus
+  date        DateTime
+  note        String?
+  createdById Int?
+  updatedById Int?
+  deletedById Int?
+  deletedAt   DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
+  inspectionStatus    InspectionStatus @default(NOT_YET)
+  confirmedByCustomer Boolean          @default(false)
+  inspectionNote      String?
+  inspectedAt         DateTime?
+  inspectedById       Int?
 
-  inspectionStatus      InspectionStatus        @default(NOT_YET)
-  confirmedByCustomer   Boolean                 @default(false)
-  inspectionNote        String?
-  inspectedAt           DateTime?
-  inspectedById         Int?
-  
-  customer              CustomerProfile         @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  provider              ServiceProvider         @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  service               Service                 @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  bookingServices       BookingServiceItem[]
-  bookingPackages       BookingServicePackage[]
-  bookingStaffs         BookingStaff[]
-  transaction           Transaction?
-  workLogs              WorkLog[]
+  customer        CustomerProfile         @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  provider        ServiceProvider         @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  service         Service                 @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  bookingServices BookingServiceItem[]
+  bookingPackages BookingServicePackage[]
+  bookingStaffs   BookingStaff[]
+  transaction     Transaction?
+  workLogs        WorkLog[]
 
   // Inspection staff
-  inspectedBy     Staff?    @relation("BookingInspectedBy", fields: [inspectedById], references: [id])  
+  inspectedBy      Staff?            @relation("BookingInspectedBy", fields: [inspectedById], references: [id])
   // Proposed service after inspection
-  proposedServices      ProposedService[]
+  proposedServices ProposedService[]
 }
 
-
 model ProposedService {
-  id         Int       @id @default(autoincrement())
-  bookingId  Int
-  serviceId  Int
-  quantity   Int       @default(1)
-  price      Float     // Giá sau kiểm tra (có thể khác basePrice)
-  notes      String?
-  createdAt  DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  bookingId Int
+  serviceId Int
+  quantity  Int      @default(1)
+  price     Float // Giá sau kiểm tra (có thể khác basePrice)
+  notes     String?
+  createdAt DateTime @default(now())
 
-  booking    Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-  service    Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 }
 
 model BookingStaff {
@@ -481,10 +482,6 @@ model PaymentTransaction {
   createdAt          DateTime @default(now())
 }
 
-
-
-
-
 model Review {
   id         Int             @id @default(autoincrement())
   customerId Int
@@ -522,18 +519,20 @@ model ServicePackage {
   createdBy       User?                   @relation("PackageCreatedBy", fields: [createdById], references: [id])
   updatedBy       User?                   @relation("PackageUpdatedBy", fields: [updatedById], references: [id])
 
-  serviceItems    ServicePackageItem[]
+  serviceItems ServicePackageItem[]
+
   @@index([deletedAt])
 }
+
 model ServicePackageItem {
   packageId Int
   serviceId Int
-  quantity  Int      @default(1)
-  discount  Float?   
-  note      String?  
-  
-  package   ServicePackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
-  service   Service        @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  quantity  Int     @default(1)
+  discount  Float?
+  note      String?
+
+  package ServicePackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  service Service        @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
   @@id([packageId, serviceId])
 }
@@ -693,11 +692,13 @@ enum VerificationStatus {
   VERIFIED
   REJECTED
 }
+
 enum InspectionStatus {
   NOT_YET
   IN_PROGRESS
   DONE
 }
+
 enum TimeOffStatus {
   PENDING
   APPROVED

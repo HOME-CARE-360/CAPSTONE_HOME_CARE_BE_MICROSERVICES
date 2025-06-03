@@ -110,4 +110,10 @@ export class AuthGatewayController {
             id: data.user._id,
         };
     }
+    @Get("ping")
+    pong() {
+        return {
+            data: "pong"
+        }
+    }
 }

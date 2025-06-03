@@ -8,12 +8,13 @@ import { join } from 'path';
 import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
 import { CommonModule } from 'libs/common/src';
 import { ConfigModule } from 'libs/common/src/modules/config.module';
+import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: AUTH_SERVICE,
+        name: AUTH_SERVICE_NAME,
         useFactory: (configService: ConfigService) => ({
           transport: Transport.GRPC,
           options: {

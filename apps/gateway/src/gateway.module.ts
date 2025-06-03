@@ -4,9 +4,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthGatewayController } from './auth.gateway.controller';
 import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
 import { CommonModule } from 'libs/common/src';
+import { ConfigModule } from 'libs/common/src/modules/config.module';
 
 @Module({
-  imports: [CommonModule,
+  imports: [CommonModule, ConfigModule,
     ClientsModule.register([
       {
         name: AUTH_SERVICE,

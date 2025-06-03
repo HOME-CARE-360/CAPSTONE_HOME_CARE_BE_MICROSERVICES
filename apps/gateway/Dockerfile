@@ -11,7 +11,7 @@ RUN npm install -g pnpm
 
 COPY apps/gateway apps/gateway
 COPY libs libs
-
+COPY prisma prisma
 RUN pnpm install -r 
 RUN pnpm prisma generate
 RUN pnpm run build gateway

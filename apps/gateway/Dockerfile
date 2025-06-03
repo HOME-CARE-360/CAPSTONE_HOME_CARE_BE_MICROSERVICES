@@ -13,7 +13,7 @@ COPY apps/gateway apps/gateway
 COPY libs libs
 
 RUN pnpm install -r 
-
+RUN pnpm prisma generate
 RUN pnpm run build gateway
 
 FROM node:alpine as production

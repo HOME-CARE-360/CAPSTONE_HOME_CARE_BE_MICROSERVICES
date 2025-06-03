@@ -12,12 +12,13 @@ import {
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';
+import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
 import { lastValueFrom } from 'rxjs';
 
 @Controller('auth')
 export class AuthGatewayController {
     constructor(
-        @Inject('AUTH_SERVICE') private readonly authClient: ClientProxy
+        @Inject(AUTH_SERVICE_NAME) private readonly authClient: ClientProxy
     ) { }
 
     @Post('register')

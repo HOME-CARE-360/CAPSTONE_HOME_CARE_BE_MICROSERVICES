@@ -31,5 +31,5 @@ RUN npm install -g pnpm
 RUN pnpm install --prod
 
 COPY --from=development /usr/src/app/dist ./dist
-COPY --from=development /usr/src/app/node_modules/@prisma /usr/src/app/node_modules/@prisma
+COPY --from=development /usr/src/app/node_modules /usr/src/app/node_modules
 CMD ["node", "dist/apps/gateway/main"]

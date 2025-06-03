@@ -1,4 +1,4 @@
-import { UserStatus } from "@prisma/clientPg"
+import { UserStatus } from "@prisma/client"
 import { z } from "zod"
 import { RoleSchema } from "./shared-role.model"
 import { PermissionSchema } from "./shared-permission.model"

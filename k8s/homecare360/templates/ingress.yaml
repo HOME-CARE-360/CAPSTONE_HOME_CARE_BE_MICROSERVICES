@@ -6,19 +6,19 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: gce
+  ingressClassName: nginx
   tls:
     - hosts:
-        - api.homecare360.com
+        - api.homecare360.space
       secretName: gateway-tls
   rules:
-    - host: api.homecare360.com
+    - host: api.homecare360.space
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: gateway-service
+                name: gateway-http
                 port:
                   number: 80

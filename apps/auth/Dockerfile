@@ -35,6 +35,5 @@ RUN pnpm install --prod
 
 
 COPY --from=development /usr/src/app/dist ./dist
-COPY prisma prisma
 COPY proto proto
 CMD ["node", "dist/apps/auth/main"]

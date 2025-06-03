@@ -8,11 +8,11 @@ COPY tsconfig.json tsconfig.json
 COPY nest-cli.json nest-cli.json
 
 RUN npm install -g pnpm
-
+RUN pnpm install -r 
 COPY apps/gateway apps/gateway
 COPY libs libs
 COPY prisma prisma
-RUN pnpm install -r 
+
 RUN pnpm prisma generate
 RUN pnpm run build gateway
 

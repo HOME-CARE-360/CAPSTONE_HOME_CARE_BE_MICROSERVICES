@@ -9,12 +9,14 @@ COPY nest-cli.json ./
 COPY tsconfig.build.json ./
 COPY tsconfig.json ./
 RUN npm install -g pnpm
-
-COPY prisma prisma
 RUN pnpm install
-RUN pnpm prisma generate
+
 COPY apps/auth apps/auth
 COPY libs libs
+
+COPY prisma prisma
+
+RUN pnpm prisma generate
 
 
 

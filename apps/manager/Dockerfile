@@ -9,12 +9,13 @@
     COPY tsconfig.build.json ./
     COPY tsconfig.json ./
     RUN npm install -g pnpm
-
-    COPY prisma prisma
     RUN pnpm install
-    RUN pnpm prisma generate
     COPY apps/manager apps/manager
+    COPY prisma prisma
     COPY libs libs
+    RUN pnpm prisma generate
+
+
 
     
  

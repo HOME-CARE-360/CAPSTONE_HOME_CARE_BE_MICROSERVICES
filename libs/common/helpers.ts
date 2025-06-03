@@ -42,6 +42,7 @@ export const adjustDateToWeekday = (startDate: Date, day: WeekDay): Date => {
         MONDAY: 1, TUESDAY: 2, WEDNESDAY: 3,
         THURSDAY: 4, FRIDAY: 5, SATURDAY: 6, SUNDAY: 0,
     };
+
     const targetDay = dayMap[day];
     const current = startDate.getDay();
     const diff = (targetDay + 7 - current) % 7;

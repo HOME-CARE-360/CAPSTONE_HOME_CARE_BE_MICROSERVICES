@@ -10,6 +10,8 @@
         "name": "zod-to-ts-plugin"
       }
     ],
+    "moduleResolution": "node",
+    "types": ["node"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,

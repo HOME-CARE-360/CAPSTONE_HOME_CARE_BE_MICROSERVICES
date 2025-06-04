@@ -3,7 +3,7 @@ import { Body, Controller, HttpCode, HttpStatus, Get, Ip, Post, Query, Res } fro
 import { AuthService } from './auth.service';
 
 import { ZodSerializerDto } from 'nestjs-zod';
-import { GetAuthorizationUrlResDTO, LoginBodyDTO, RegisterBodyDTO, RegisterResDTO, SendOTPBodyDTO, ForgotPasswordBodyDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterProviderBodyDto, } from 'libs/common/src/request-response-type/auth/auth.dto';
+import { GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, RegisterBodyDTO, RegisterResDTO, SendOTPBodyDTO, ForgotPasswordBodyDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterProviderBodyDto, } from 'libs/common/src/request-response-type/auth/auth.dto';
 
 import { GoogleService } from './google.service';
 
@@ -17,7 +17,7 @@ import { ConfigService } from '@nestjs/config';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
 
-@Controller()
+@Controller('')
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly googleService: GoogleService, private configService: ConfigService) { }
   @Post('register')
@@ -33,14 +33,16 @@ export class AuthController {
     return await this.authService.sendOTP(body)
   }
   @MessagePattern({ cmd: 'login' })
-  login(data: LoginBodyDTO & { userAgent: string; ip: string }) {
+  @IsPublic()
+  @ZodSerializerDto(LoginResDTO)
+  login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
 
     return this.authService.login({
-      ...data
+      ...body, userAgent, ip
     })
 
-  }
 
+  }
 
   @Post('refresh-token')
   @IsPublic()

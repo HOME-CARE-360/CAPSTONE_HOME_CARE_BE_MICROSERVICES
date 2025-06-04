@@ -41,24 +41,11 @@ export class AuthGatewayController {
     async login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
         console.log({ ...body, ip, userAgent });
 
-        try {
-            const result = await lastValueFrom(
-                this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
-            );
-            return result;
-        } catch (error) {
-            // ✅ Nếu service đã trả statusCode và message
-            const { message } = error;
-            console.log(error);
+        const result = await lastValueFrom(
+            this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
+        );
+        return result;
 
-            // Nếu message đã là object có statusCode → forward nguyên bản
-            if (message?.statusCode) {
-                throw new HttpException(message, message.statusCode);
-            }
-
-            // Nếu không rõ → fallback
-            throw new HttpException('Internal server error', 500);
-        }
 
 
     }

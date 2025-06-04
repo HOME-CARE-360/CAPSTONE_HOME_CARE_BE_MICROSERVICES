@@ -1,28 +1,24 @@
+
 import { NestFactory } from '@nestjs/core';
 import { AuthModule } from './auth.module';
-import { Transport } from "@nestjs/microservices"
+import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
-import { join } from 'path';
-import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
+
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
-  const configService = app.get(ConfigService)
-  app.enableCors({});
+  const configService = app.get(ConfigService);
+
 
   app.connectMicroservice({
-    transport: Transport.GRPC,
+    transport: Transport.TCP,
     options: {
-      package: AUTH_SERVICE,
-      protoPath: join(__dirname, '../../../proto/auth.proto'),
-      url: configService.getOrThrow('AUTH_GRPC_URL'),
+      port: Number(configService.getOrThrow('AUTH_TCP_PORT')),
+      host: '0.0.0.0',
     },
   });
-  app.enableCors()
 
-  await app.startAllMicroservices()
-  await app.listen(configService.get("AUTH_PORT") as string, "0.0.0.0");
-  console.log(`🚀 App listening on port ${process.env.AUTH_PORT as string}`);
+  await app.startAllMicroservices();
+  await app.listen(Number(configService.getOrThrow('AUTH_HTTP_PORT')), '0.0.0.0');
+  console.log(`🚀 Auth HTTP listening on ${configService.get('AUTH_HTTP_PORT')}`);
 }
 bootstrap();
-
-

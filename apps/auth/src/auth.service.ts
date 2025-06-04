@@ -13,7 +13,7 @@ import {
     RegisterBodyType,
     RegisterProviderBodyType,
     SendOTPBodyType,
-} from './auth.model'
+} from 'libs/common/src/request-response-type/auth/auth.model'
 
 
 

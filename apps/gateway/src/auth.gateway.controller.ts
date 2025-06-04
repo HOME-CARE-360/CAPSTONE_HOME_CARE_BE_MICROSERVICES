@@ -118,4 +118,11 @@ export class AuthGatewayController {
             data: "pong"
         }
     }
+    @IsPublic()
+    @Get('api')
+    async swagger() {
+        return await lastValueFrom(
+            this.authClient.send({ cmd: 'api' }, {})
+        );
+    }
 }

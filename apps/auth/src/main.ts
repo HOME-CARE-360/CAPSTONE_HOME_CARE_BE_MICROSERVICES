@@ -4,8 +4,6 @@ import { Transport } from "@nestjs/microservices"
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
-
-
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
   const configService = app.get(ConfigService)
@@ -19,6 +17,8 @@ async function bootstrap() {
       url: configService.getOrThrow('AUTH_GRPC_URL'),
     },
   });
+  app.enableCors()
+
   await app.startAllMicroservices()
   await app.listen(configService.get("AUTH_PORT") as string, "0.0.0.0");
   console.log(`🚀 App listening on port ${process.env.AUTH_PORT as string}`);

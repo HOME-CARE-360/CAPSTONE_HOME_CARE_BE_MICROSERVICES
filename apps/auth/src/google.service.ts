@@ -8,7 +8,7 @@ import { AuthReponsitory } from './auth.repo'
 
 import { AuthService } from './auth.service'
 
-import { GoogleAuthStateType } from './auth.model'
+import { GoogleAuthStateType } from '../../../libs/common/src/request-response-type/auth/auth.model'
 import { GoogleUserInfoError } from './auth.error'
 import { HashingService } from 'libs/common/src/services/hashing.service'
 import { SharedRoleRepository } from 'libs/common/src/repositories/shared-role.repo'

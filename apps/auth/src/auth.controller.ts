@@ -3,7 +3,7 @@ import { Body, Controller, HttpCode, HttpStatus, Get, Ip, Post, Query, Res } fro
 import { AuthService } from './auth.service';
 
 import { ZodSerializerDto } from 'nestjs-zod';
-import { GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, RegisterBodyDTO, RegisterResDTO, SendOTPBodyDTO, ForgotPasswordBodyDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterProviderBodyDto, } from './auth.dto';
+import { GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, RegisterBodyDTO, RegisterResDTO, SendOTPBodyDTO, ForgotPasswordBodyDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterProviderBodyDto, } from 'libs/common/src/request-response-type/auth/auth.dto';
 
 import { GoogleService } from './google.service';
 

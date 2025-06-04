@@ -34,11 +34,10 @@ export class AuthController {
   }
   @MessagePattern({ cmd: 'login' })
   @IsPublic()
-  @ZodSerializerDto(LoginResDTO)
-  login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
+  login(body: any) {
 
     return this.authService.login({
-      ...body, userAgent, ip
+      ...body
     })
 
 

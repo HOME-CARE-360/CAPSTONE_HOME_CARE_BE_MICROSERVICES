@@ -39,6 +39,8 @@ export class AuthGatewayController {
     @Post('login')
     @ZodSerializerDto(LoginResDTO)
     async login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
+        console.log({ ...body, ip, userAgent });
+
         try {
             const result = await lastValueFrom(
                 this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })

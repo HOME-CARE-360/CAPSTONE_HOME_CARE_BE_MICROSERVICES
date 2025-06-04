@@ -162,6 +162,7 @@ export class AuthService {
             console.log("loi cmnr");
 
             throw InvalidPasswordException
+
         }
 
         if (user.totpSecret) {

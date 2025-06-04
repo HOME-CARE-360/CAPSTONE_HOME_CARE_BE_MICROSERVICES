@@ -1,6 +1,5 @@
 import { UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
 
-// OTP related errors
 export const InvalidOTPException = new UnprocessableEntityException([
     {
         message: 'Error.InvalidOTP',
@@ -26,7 +25,6 @@ export const RefreshTokenRevokedException = new UnauthorizedException({
     message: 'Error.RefreshTokenRevoked',
     path: 'refreshToken',
 })
-// Email related errors
 export const EmailAlreadyExistsException = new UnprocessableEntityException([
     {
         message: 'Error.EmailAlreadyExists',

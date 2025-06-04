@@ -12,6 +12,7 @@ import {
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';
+import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
 import { lastValueFrom } from 'rxjs';
 
@@ -20,17 +21,17 @@ export class AuthGatewayController {
     constructor(
         @Inject(AUTH_SERVICE_NAME) private readonly authClient: ClientProxy
     ) { }
-
+    @IsPublic()
     @Post('register')
     async register(@Body() body: any) {
         return await lastValueFrom(this.authClient.send({ cmd: 'register' }, body));
     }
-
+    @IsPublic()
     @Post('otp')
     async sendOTP(@Body() body: any) {
         return await lastValueFrom(this.authClient.send({ cmd: 'send-otp' }, body));
     }
-
+    @IsPublic()
     @Post('login')
     async login(@Body() body: any, @Ip() ip: string) {
         const userAgent = body.userAgent || '';
@@ -38,7 +39,7 @@ export class AuthGatewayController {
             this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
         );
     }
-
+    @IsPublic()
     @Post('refresh-token')
     @HttpCode(HttpStatus.OK)
     async refreshToken(@Body() body: any, @Ip() ip: string) {
@@ -50,28 +51,28 @@ export class AuthGatewayController {
             )
         );
     }
-
+    @IsPublic()
     @Post('logout')
     async logout(@Body() body: any) {
         return await lastValueFrom(
             this.authClient.send({ cmd: 'logout' }, body.refreshToken)
         );
     }
-
+    @IsPublic()
     @Post('forgot-password')
     async forgotPassword(@Body() body: any) {
         return await lastValueFrom(
             this.authClient.send({ cmd: 'forgot-password' }, body)
         );
     }
-
+    @IsPublic()
     @Get('google-link')
     async getAuthorizationUrl(@Ip() ip: string, @Query('userAgent') userAgent?: string) {
         return await lastValueFrom(
             this.authClient.send({ cmd: 'google-link' }, { ip, userAgent })
         );
     }
-
+    @IsPublic()
     @Get('google/callback')
     async googleCallback(
         @Query('code') code: string,
@@ -95,14 +96,14 @@ export class AuthGatewayController {
             );
         }
     }
-
+    @IsPublic()
     @Post('register-provider')
     async registerProvider(@Body() body: any) {
         return await lastValueFrom(
             this.authClient.send({ cmd: 'register-provider' }, body)
         );
     }
-
+    @IsPublic()
     @Post('authenticate')
     authenticate(@Body() data: any) {
         return {
@@ -110,6 +111,7 @@ export class AuthGatewayController {
             id: data.user._id,
         };
     }
+    @IsPublic()
     @Get("ping")
     pong() {
         return {

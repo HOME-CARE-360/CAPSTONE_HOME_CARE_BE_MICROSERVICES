@@ -5,6 +5,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
 spec:
   ingressClassName: nginx
   tls:
@@ -15,6 +16,16 @@ spec:
     - host: api.homecare360.space
       http:
         paths:
+          # This must be declared first
+          - path: /.well-known/acme-challenge/*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: gateway-http
+                port:
+                  number: 80
+
+          # Your app
           - path: /
             pathType: Prefix
             backend:

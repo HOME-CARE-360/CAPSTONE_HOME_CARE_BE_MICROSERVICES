@@ -47,6 +47,7 @@ export class AuthGatewayController {
         } catch (error) {
             // ✅ Nếu service đã trả statusCode và message
             const { message } = error;
+            console.log(error);
 
             // Nếu message đã là object có statusCode → forward nguyên bản
             if (message?.statusCode) {

@@ -41,15 +41,12 @@ export class AuthGatewayController {
     async login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
         try {
             const result = await lastValueFrom(
-                this.authClient.send({ cmd: 'login' }, body)
+                this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
             );
             return result;
         } catch (error) {
             // ✅ Nếu service đã trả statusCode và message
             const { message } = error;
-            console.log(error);
-
-
 
             // Nếu message đã là object có statusCode → forward nguyên bản
             if (message?.statusCode) {
@@ -59,92 +56,93 @@ export class AuthGatewayController {
             // Nếu không rõ → fallback
             throw new HttpException('Internal server error', 500);
         }
+
+
     }
-}
-@IsPublic()
-@Post('refresh-token')
-@HttpCode(HttpStatus.OK)
-async refreshToken(@Body() body: any, @Ip() ip: string) {
-    const userAgent = body.userAgent || '';
-    return await lastValueFrom(
-        this.authClient.send(
-            { cmd: 'refresh-token' },
-            { refreshToken: body.refreshToken, ip, userAgent }
-        )
-    );
-}
-@IsPublic()
-@Post('logout')
-async logout(@Body() body: any) {
-    return await lastValueFrom(
-        this.authClient.send({ cmd: 'logout' }, body.refreshToken)
-    );
-}
-@IsPublic()
-@Post('forgot-password')
-async forgotPassword(@Body() body: any) {
-    return await lastValueFrom(
-        this.authClient.send({ cmd: 'forgot-password' }, body)
-    );
-}
-@IsPublic()
-@Get('google-link')
-async getAuthorizationUrl(@Ip() ip: string, @Query('userAgent') userAgent ?: string) {
-    return await lastValueFrom(
-        this.authClient.send({ cmd: 'google-link' }, { ip, userAgent })
-    );
-}
-@IsPublic()
-@Get('google/callback')
-async googleCallback(
-    @Query('code') code: string,
-    @Query('state') state: string,
-    @Res() res: Response
-) {
-    try {
-        const result: any = await lastValueFrom(
-            this.authClient.send({ cmd: 'google-callback' }, { code, state })
-        );
-        return res.redirect(
-            `${process.env.GOOGLE_CLIENT_REDIRECT_URI}?accessToken=${result.accessToken}&refreshToken=${result.refreshToken}`
-        );
-    } catch (error) {
-        const message =
-            error instanceof Error
-                ? error.message
-                : 'Đã xảy ra lỗi khi đăng nhập bằng Google, vui lòng thử lại.';
-        return res.redirect(
-            `${process.env.GOOGLE_CLIENT_REDIRECT_URI}?errorMessage=${message}`
+    @IsPublic()
+    @Post('refresh-token')
+    @HttpCode(HttpStatus.OK)
+    async refreshToken(@Body() body: any, @Ip() ip: string) {
+        const userAgent = body.userAgent || '';
+        return await lastValueFrom(
+            this.authClient.send(
+                { cmd: 'refresh-token' },
+                { refreshToken: body.refreshToken, ip, userAgent }
+            )
         );
     }
-}
-@IsPublic()
-@Post('register-provider')
-async registerProvider(@Body() body: any) {
-    return await lastValueFrom(
-        this.authClient.send({ cmd: 'register-provider' }, body)
-    );
-}
-@IsPublic()
-@Post('authenticate')
-authenticate(@Body() data: any) {
-    return {
-        ...data.user,
-        id: data.user._id,
-    };
-}
-@IsPublic()
-@Get("ping")
-pong() {
-    return {
-        data: "pong"
+    @IsPublic()
+    @Post('logout')
+    async logout(@Body() body: any) {
+        return await lastValueFrom(
+            this.authClient.send({ cmd: 'logout' }, body.refreshToken)
+        );
     }
-}
-@IsPublic()
-@Get('api')
-async swagger() {
-    return await lastValueFrom(
-        this.authClient.send({ cmd: 'api' }, {})
-    );
-}
+    @IsPublic()
+    @Post('forgot-password')
+    async forgotPassword(@Body() body: any) {
+        return await lastValueFrom(
+            this.authClient.send({ cmd: 'forgot-password' }, body)
+        );
+    }
+    @IsPublic()
+    @Get('google-link')
+    async getAuthorizationUrl(@Ip() ip: string, @Query('userAgent') userAgent?: string) {
+        return await lastValueFrom(
+            this.authClient.send({ cmd: 'google-link' }, { ip, userAgent })
+        );
+    }
+    @IsPublic()
+    @Get('google/callback')
+    async googleCallback(
+        @Query('code') code: string,
+        @Query('state') state: string,
+        @Res() res: Response
+    ) {
+        try {
+            const result: any = await lastValueFrom(
+                this.authClient.send({ cmd: 'google-callback' }, { code, state })
+            );
+            return res.redirect(
+                `${process.env.GOOGLE_CLIENT_REDIRECT_URI}?accessToken=${result.accessToken}&refreshToken=${result.refreshToken}`
+            );
+        } catch (error) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : 'Đã xảy ra lỗi khi đăng nhập bằng Google, vui lòng thử lại.';
+            return res.redirect(
+                `${process.env.GOOGLE_CLIENT_REDIRECT_URI}?errorMessage=${message}`
+            );
+        }
+    }
+    @IsPublic()
+    @Post('register-provider')
+    async registerProvider(@Body() body: any) {
+        return await lastValueFrom(
+            this.authClient.send({ cmd: 'register-provider' }, body)
+        );
+    }
+    @IsPublic()
+    @Post('authenticate')
+    authenticate(@Body() data: any) {
+        return {
+            ...data.user,
+            id: data.user._id,
+        };
+    }
+    @IsPublic()
+    @Get("ping")
+    pong() {
+        return {
+            data: "pong"
+        }
+    }
+    @IsPublic()
+    @Get('api')
+    async swagger() {
+        return await lastValueFrom(
+            this.authClient.send({ cmd: 'api' }, {})
+        );
+    }
 }

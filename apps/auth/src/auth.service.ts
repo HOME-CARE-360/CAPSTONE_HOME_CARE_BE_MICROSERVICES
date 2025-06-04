@@ -158,7 +158,11 @@ export class AuthService {
         if (!user) throw EmailNotFoundException
 
         const isPasswordMatch = await this.hashingService.compare(body.password, user.password)
-        if (!isPasswordMatch) throw InvalidPasswordException
+        if (!isPasswordMatch) {
+            console.log("loi cmnr");
+
+            throw InvalidPasswordException
+        }
 
         if (user.totpSecret) {
             if (!body.totpCode && !body.code) throw InvalidTOTPAndCodeException

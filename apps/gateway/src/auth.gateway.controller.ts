@@ -13,7 +13,10 @@ import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
+import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
+import { LoginBodyDTO, LoginResDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
 import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
+import { ZodSerializerDto } from 'nestjs-zod';
 import { lastValueFrom } from 'rxjs';
 
 @Controller('auth')
@@ -33,8 +36,8 @@ export class AuthGatewayController {
     }
     @IsPublic()
     @Post('login')
-    async login(@Body() body: any, @Ip() ip: string) {
-        const userAgent = body.userAgent || '';
+    @ZodSerializerDto(LoginResDTO)
+    async login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
         return await lastValueFrom(
             this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
         );

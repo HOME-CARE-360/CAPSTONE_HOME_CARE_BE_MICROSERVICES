@@ -18,7 +18,6 @@ import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { LoginBodyDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
 import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
 import { lastValueFrom } from 'rxjs';
-import { ZodError } from 'zod';
 @Controller('auth')
 export class AuthGatewayController {
     constructor(

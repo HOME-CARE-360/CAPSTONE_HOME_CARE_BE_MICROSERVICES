@@ -58,7 +58,7 @@ export const adjustDateToWeekday = (startDate: Date, day: WeekDay): Date => {
 
 export function forwardRpcException(error: any, isRpc = false): never {
     console.log(error);
-    console.log(error.message);
+    console.log(error.response.message);
 
     if (error instanceof ZodError) {
         console.log("ok r");

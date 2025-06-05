@@ -53,7 +53,7 @@ export const adjustDateToWeekday = (startDate: Date, day: WeekDay): Date => {
 
 
 export function forwardRpcException(error: any): never {
-    const original = error?.message;
+    const original = error;
 
     if (original?.response?.statusCode) {
         throw new HttpException(original.response, original.response.statusCode);

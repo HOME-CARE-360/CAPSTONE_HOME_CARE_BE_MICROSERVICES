@@ -15,11 +15,10 @@ import { Response } from 'express';
 import { forwardRpcException } from 'libs/common/helpers';
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
-import { LoginBodyDTO, LoginResDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
+import { LoginBodyDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
 import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
-import { ZodSerializerDto } from 'nestjs-zod';
 import { lastValueFrom } from 'rxjs';
-
+import { ZodError } from 'zod';
 @Controller('auth')
 export class AuthGatewayController {
     constructor(
@@ -37,7 +36,6 @@ export class AuthGatewayController {
     }
     @IsPublic()
     @Post('login')
-    @ZodSerializerDto(LoginResDTO)
     async login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
         console.log({ ...body, ip, userAgent });
         try {
@@ -46,6 +44,9 @@ export class AuthGatewayController {
             );
             return result;
         } catch (error) {
+            console.log(typeof error);
+            console.log(error);
+
             forwardRpcException(error)
         }
 

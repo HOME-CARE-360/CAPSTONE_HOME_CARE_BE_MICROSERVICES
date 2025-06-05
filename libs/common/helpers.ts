@@ -3,7 +3,9 @@ import { Prisma, WeekDay } from '@prisma/client';
 import { randomInt } from 'crypto'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
-import { HttpException } from '@nestjs/common';
+import { ZodError } from 'zod';
+import { BadRequestException } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 // Type Predicate
 export function isUniqueConstraintPrismaError(error: any): error is Prisma.PrismaClientKnownRequestError {
     return error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002'
@@ -52,16 +54,31 @@ export const adjustDateToWeekday = (startDate: Date, day: WeekDay): Date => {
 }
 
 
-export function forwardRpcException(error: any): never {
-    const original = error;
 
-    if (original?.response?.statusCode) {
-        throw new HttpException(original.response, original.response.statusCode);
+
+export function forwardRpcException(error: unknown, isRpc = false): never {
+    console.log(error);
+
+    if (error instanceof ZodError) {
+        console.log("ok r");
+
+        const formatted = error.errors.map((e) => ({
+            message: e.message,
+            path: e.path.join('.'),
+        }));
+
+        if (isRpc) {
+            throw new RpcException(
+                new BadRequestException({ message: formatted, statusCode: 400 })
+            );
+        }
+
+        throw new BadRequestException({ message: formatted });
     }
 
-    if (original?.statusCode) {
-        throw new HttpException(original, original.statusCode);
+    if (isRpc) {
+        throw new RpcException('Internal server error');
     }
 
-    throw new HttpException('Internal server error', 500);
+    throw new BadRequestException('Internal server error');
 }

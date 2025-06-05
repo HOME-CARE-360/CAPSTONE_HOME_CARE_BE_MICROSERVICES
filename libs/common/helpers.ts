@@ -3,7 +3,7 @@ import { Prisma, WeekDay } from '@prisma/client';
 import { randomInt } from 'crypto'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
-
+import { HttpException } from '@nestjs/common';
 // Type Predicate
 export function isUniqueConstraintPrismaError(error: any): error is Prisma.PrismaClientKnownRequestError {
     return error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002'
@@ -49,4 +49,19 @@ export const adjustDateToWeekday = (startDate: Date, day: WeekDay): Date => {
     const result = new Date(startDate);
     result.setDate(startDate.getDate() + diff);
     return result;
+}
+
+
+export function forwardRpcException(error: any): never {
+    const original = error?.message;
+
+    if (original?.response?.statusCode) {
+        throw new HttpException(original.response, original.response.statusCode);
+    }
+
+    if (original?.statusCode) {
+        throw new HttpException(original, original.statusCode);
+    }
+
+    throw new HttpException('Internal server error', 500);
 }

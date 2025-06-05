@@ -3,7 +3,6 @@ import {
     Controller,
     Get,
     HttpCode,
-    HttpException,
     HttpStatus,
     Ip,
     Post,
@@ -13,6 +12,7 @@ import {
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';
+import { forwardRpcException } from 'libs/common/helpers';
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { LoginBodyDTO, LoginResDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
@@ -40,11 +40,15 @@ export class AuthGatewayController {
     @ZodSerializerDto(LoginResDTO)
     async login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
         console.log({ ...body, ip, userAgent });
+        try {
+            const result = await lastValueFrom(
+                this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
+            );
+            return result;
+        } catch (error) {
+            forwardRpcException(error)
+        }
 
-        const result = await lastValueFrom(
-            this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
-        );
-        return result;
 
 
 

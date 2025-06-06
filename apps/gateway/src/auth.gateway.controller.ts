@@ -2,8 +2,6 @@ import {
     Body,
     Controller,
     Get,
-    HttpCode,
-    HttpStatus,
     Ip,
     Post,
     Query,
@@ -15,7 +13,10 @@ import { Response } from 'express';
 import { handleZodError } from 'libs/common/helpers';
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
+import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
+import { ForgotPasswordBodyDTO, GetAuthorizationUrlResDTO, LoginResDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterBodyDTO, RegisterProviderBodyDto, RegisterResDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
 import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
+import { ZodSerializerDto } from 'nestjs-zod';
 import { lastValueFrom } from 'rxjs';
 @Controller('auth')
 export class AuthGatewayController {
@@ -24,24 +25,43 @@ export class AuthGatewayController {
     ) { }
     @IsPublic()
     @Post('register')
-    async register(@Body() body: any) {
-        return await lastValueFrom(this.authClient.send({ cmd: 'register' }, body));
+    @ZodSerializerDto(RegisterResDTO)
+    async register(@Body() body: RegisterBodyDTO) {
+        try {
+            return await lastValueFrom(this.authClient.send({ cmd: 'register' }, body));
+        } catch (error) {
+            console.log(error);
+
+            handleZodError(error)
+
+
+        }
+
     }
     @IsPublic()
     @Post('otp')
     async sendOTP(@Body() body: any) {
-        return await lastValueFrom(this.authClient.send({ cmd: 'send-otp' }, body));
+        try {
+            return await lastValueFrom(this.authClient.send({ cmd: 'send-otp' }, body));
+        } catch (error) {
+            console.log(error);
+
+            handleZodError(error)
+        }
+
     }
     @IsPublic()
     @Post('login')
-    async login(@Body() body: any, @UserAgent() userAgent: string, @Ip() ip: string) {
-        console.log({ ...body, ip, userAgent });
+    @ZodSerializerDto(LoginResDTO)
+    async login(@Body() body: LoginResDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
         try {
             const result = await lastValueFrom(
                 this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })
             );
             return result;
         } catch (error) {
+            console.log(error);
+
             handleZodError(error)
         }
 
@@ -51,43 +71,71 @@ export class AuthGatewayController {
     }
     @IsPublic()
     @Post('refresh-token')
-    @HttpCode(HttpStatus.OK)
-    async refreshToken(@Body() body: any, @Ip() ip: string) {
-        const userAgent = body.userAgent || '';
-        return await lastValueFrom(
-            this.authClient.send(
-                { cmd: 'refresh-token' },
-                { refreshToken: body.refreshToken, ip, userAgent }
-            )
-        );
+    @ZodSerializerDto(RefreshTokenResDTO)
+    async refreshToken(@Body() body: RefreshTokenBodyDTO, @Ip() ip: string, @UserAgent() userAgent: string) {
+        try {
+            return await lastValueFrom(
+                this.authClient.send(
+                    { cmd: 'refresh-token' },
+                    { refreshToken: body.refreshToken, ip, userAgent }
+                )
+            );
+        } catch (error) {
+            console.log(error);
+
+            handleZodError(error)
+        }
+
     }
     @IsPublic()
     @Post('logout')
-    async logout(@Body() body: any) {
-        return await lastValueFrom(
-            this.authClient.send({ cmd: 'logout' }, body.refreshToken)
-        );
+    @ZodSerializerDto(MessageResDTO)
+    async logout(@Body() body: LogoutBodyDTO) {
+        try {
+            return await lastValueFrom(
+                this.authClient.send({ cmd: 'logout' }, body.refreshToken)
+            );
+        } catch (error) {
+            console.log(error);
+
+            handleZodError(error)
+        }
+
     }
     @IsPublic()
     @Post('forgot-password')
-    async forgotPassword(@Body() body: any) {
-        return await lastValueFrom(
-            this.authClient.send({ cmd: 'forgot-password' }, body)
-        );
+    @ZodSerializerDto(MessageResDTO)
+    async forgotPassword(@Body() body: ForgotPasswordBodyDTO) {
+        try {
+            return await lastValueFrom(
+                this.authClient.send({ cmd: 'forgot-password' }, body)
+            );
+        } catch (error) {
+            console.log(error);
+
+            handleZodError(error)
+        }
+
     }
     @IsPublic()
     @Get('google-link')
-    async getAuthorizationUrl(@Ip() ip: string, @Query('userAgent') userAgent?: string) {
-        return await lastValueFrom(
-            this.authClient.send({ cmd: 'google-link' }, { ip, userAgent })
-        );
+    @ZodSerializerDto(GetAuthorizationUrlResDTO)
+    async getAuthorizationUrl(@Ip() ip: string, @UserAgent() userAgent: string) {
+        try {
+            return await lastValueFrom(
+                this.authClient.send({ cmd: 'google-link' }, { ip, userAgent })
+            );
+        } catch (error) {
+            console.log(error);
+
+            handleZodError(error)
+        }
+
     }
     @IsPublic()
     @Get('google/callback')
     async googleCallback(
-        @Query('code') code: string,
-        @Query('state') state: string,
-        @Res() res: Response
+        @Query('code') code: string, @Query('state') state: string, @Res() res: Response
     ) {
         try {
             const result: any = await lastValueFrom(
@@ -108,18 +156,18 @@ export class AuthGatewayController {
     }
     @IsPublic()
     @Post('register-provider')
-    async registerProvider(@Body() body: any) {
-        return await lastValueFrom(
-            this.authClient.send({ cmd: 'register-provider' }, body)
-        );
-    }
-    @IsPublic()
-    @Post('authenticate')
-    authenticate(@Body() data: any) {
-        return {
-            ...data.user,
-            id: data.user._id,
-        };
+    @ZodSerializerDto(MessageResDTO)
+    async registerProvider(@Body() body: RegisterProviderBodyDto) {
+        try {
+            return await lastValueFrom(
+                this.authClient.send({ cmd: 'register-provider' }, body)
+            );
+        } catch (error) {
+            console.log(error);
+
+            handleZodError(error)
+        }
+
     }
     @IsPublic()
     @Get("ping")

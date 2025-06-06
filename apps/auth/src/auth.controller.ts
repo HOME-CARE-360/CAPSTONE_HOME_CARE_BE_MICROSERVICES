@@ -1,5 +1,5 @@
 
-import { Body, Controller, HttpCode, HttpStatus, Get, Ip, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { ZodSerializerDto } from 'nestjs-zod';
@@ -10,11 +10,9 @@ import { GoogleService } from './google.service';
 
 
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
-import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
-import { Response } from "express"
 import { ConfigService } from '@nestjs/config';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 
 
 @Controller('')
@@ -46,8 +44,7 @@ export class AuthController {
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @ZodSerializerDto(RefreshTokenResDTO)
-
-  refreshToken(@Body() body: RefreshTokenBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
+  refreshToken(@Body() body: RefreshTokenBodyDTO, ip: string, userAgent: string) {
 
     return this.authService.refreshToken({
       refreshToken: body.refreshToken, userAgent, ip
@@ -71,7 +68,7 @@ export class AuthController {
   @Get('google-link')
   @IsPublic()
   @ZodSerializerDto(GetAuthorizationUrlResDTO)
-  getAuthorizationUrl(@UserAgent() userAgent: string, @Ip() ip: string) {
+  getAuthorizationUrl(ip: string, userAgent: string) {
     return this.googleService.getAuthorizationUrl({
       userAgent,
       ip,
@@ -79,38 +76,20 @@ export class AuthController {
   }
   @Get('google/callback')
   @IsPublic()
-  async googleCallback(@Query('code') code: string, @Query('state') state: string, @Res() res: Response) {
-    try {
-      const data = await this.googleService.googleCallback({
-        code,
-        state,
-      })
-      return res.redirect(
-        `${this.configService.get("GOOGLE_CLIENT_REDIRECT_URI")}?accessToken=${data.accessToken}&refreshToken=${data.refreshToken}`,
-      )
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'Đã xảy ra lỗi khi đăng nhập bằng Google, vui lòng thử lại bằng cách khác'
-      return res.redirect(`${this.configService.get("GOOGLE_CLIENT_REDIRECT_URI")}?errorMessage=${message}`)
-    }
+  async googleCallback(code: string, state: string) {
+
+    const data = await this.googleService.googleCallback({
+      code,
+      state,
+    })
+    return data
+
   }
   @Post('register-provider')
   @IsPublic()
   @ZodSerializerDto(MessageResDTO)
   async registerProvider(@Body() body: RegisterProviderBodyDto) {
     return await this.authService.registerProvider(body)
-
-  }
-  authenticate(@Payload() data: any) {
-    console.log(data);
-    console.log("hihi");
-
-    return {
-      ...data.user,
-      id: data.user._id,
-    };
   }
 
 }

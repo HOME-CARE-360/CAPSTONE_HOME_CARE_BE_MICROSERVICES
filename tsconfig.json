@@ -11,7 +11,7 @@
       }
     ],
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["node", "Multer"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
@@ -26,7 +26,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "esModuleInterop": true,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {}
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"]

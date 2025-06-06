@@ -1,5 +1,5 @@
 
-import { Body, Controller, HttpCode, HttpStatus, Get, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { ZodSerializerDto } from 'nestjs-zod';
@@ -40,7 +40,7 @@ export class AuthController {
 
   }
 
-  @Post('refresh-token')
+  @MessagePattern({ cmd: 'refresh-token' })
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @ZodSerializerDto(RefreshTokenResDTO)
@@ -54,20 +54,19 @@ export class AuthController {
 
 
   }
-  @Post('logout')
+  @MessagePattern({ cmd: 'logout' })
   @ZodSerializerDto(MessageResDTO)
   logout(@Body() body: LogoutBodyDTO) {
     return this.authService.logout(body.refreshToken)
   }
-  @Post('forgot-password')
+  @MessagePattern({ cmd: 'forgot-password' })
   @IsPublic()
   @ZodSerializerDto(MessageResDTO)
   forgotPassword(@Body() body: ForgotPasswordBodyDTO) {
     return this.authService.forgotPassword(body)
   }
 
-
-  @Get('google-link')
+  @MessagePattern({ cmd: 'google-link' })
   @IsPublic()
   @ZodSerializerDto(GetAuthorizationUrlResDTO)
   getAuthorizationUrl(ip: string, userAgent: string) {
@@ -76,18 +75,16 @@ export class AuthController {
       ip,
     })
   }
-  @Get('google/callback')
+  @MessagePattern({ cmd: 'google/callback' })
   @IsPublic()
   async googleCallback(code: string, state: string) {
-
     const data = await this.googleService.googleCallback({
       code,
       state,
     })
     return data
-
   }
-  @Post('register-provider')
+  @MessagePattern({ cmd: 'register-provider' })
   @IsPublic()
   @ZodSerializerDto(MessageResDTO)
   async registerProvider(@Body() body: RegisterProviderBodyDto) {

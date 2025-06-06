@@ -16,7 +16,6 @@ spec:
     - host: api.homecare360.space
       http:
         paths:
-          # This must be declared first
           - path: /.well-known/acme-challenge/*
             pathType: ImplementationSpecific
             backend:
@@ -25,7 +24,6 @@ spec:
                 port:
                   number: 80
 
-          # Your app
           - path: /
             pathType: Prefix
             backend:

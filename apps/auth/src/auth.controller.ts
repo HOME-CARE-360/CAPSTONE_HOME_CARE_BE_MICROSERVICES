@@ -32,9 +32,11 @@ export class AuthController {
   }
   @MessagePattern({ cmd: 'login' })
   @IsPublic()
-  login(body: LoginBodyDTO, ip: string, userAgent: string) {
+  login(body: LoginBodyDTO & { ip: string, userAgent: string }) {
+    console.log(body);
+
     return this.authService.login({
-      ...body, ip, userAgent
+      ...body
     })
 
 

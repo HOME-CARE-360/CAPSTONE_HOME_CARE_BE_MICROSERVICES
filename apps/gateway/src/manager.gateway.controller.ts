@@ -1,6 +1,6 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
-import { UpdateStatusProviderBody } from "apps/manager/src/manager.model";
+import { UpdateStatusProviderBodyDTO } from "apps/manager/src/managers.dto";
 import { handleZodError } from "libs/common/helpers";
 import { MANAGER_SERVICE } from "libs/common/src/constants/service-name.constant";
 import { IsPublic } from "libs/common/src/decorator/auth.decorator";
@@ -16,7 +16,7 @@ export class AuthGatewayController {
     @IsPublic()
     @Post('change-status-provider')
     @ZodSerializerDto(MessageResDTO)
-    async changeStatusProvider(@Body() body: UpdateStatusProviderBody) {
+    async changeStatusProvider(@Body() body: UpdateStatusProviderBodyDTO) {
         try {
             return await lastValueFrom(this.authClient.send({ cmd: 'change-status-provider' }, body));
         } catch (error) {

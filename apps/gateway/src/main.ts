@@ -3,6 +3,7 @@ import { setApp } from './app';
 import { AppModule } from './gateway.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { AuthGatewayController } from './auth.gateway.controller';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);

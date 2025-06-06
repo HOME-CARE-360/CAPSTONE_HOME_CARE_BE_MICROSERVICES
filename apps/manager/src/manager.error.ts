@@ -1,36 +1,36 @@
-import { NotFoundException, UnprocessableEntityException, BadRequestException } from '@nestjs/common';
+import {
+    NotFoundException,
+    UnprocessableEntityException,
+    BadRequestException,
+} from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 
-export const ServiceProviderNotFoundException = new NotFoundException([
-    {
-        message: 'Error.ServiceProviderNotFound',
-        path: ['id'],
-    },
-]);
+export const ServiceProviderNotFoundException = new RpcException(
+    new NotFoundException([
+        { message: 'Error.ServiceProviderNotFound', path: ['id'] },
+    ])
+);
 
-export const ServiceProviderAlreadyExistsException = new UnprocessableEntityException([
-    {
-        message: 'Error.ServiceProviderAlreadyExists',
-        path: ['taxId', 'name'],
-    },
-]);
+export const ServiceProviderAlreadyExistsException = new RpcException(
+    new UnprocessableEntityException([
+        { message: 'Error.ServiceProviderAlreadyExists', path: ['taxId', 'name'] },
+    ])
+);
 
-export const SameVerificationStatusException = new BadRequestException([
-    {
-        message: 'Error.SameVerificationStatus',
-        path: ['verificationStatus'],
-    },
-]);
+export const SameVerificationStatusException = new RpcException(
+    new BadRequestException([
+        { message: 'Error.SameVerificationStatus', path: ['verificationStatus'] },
+    ])
+);
 
-export const InvalidCompanyTypeException = new BadRequestException([
-    {
-        message: 'Error.InvalidCompanyType',
-        path: ['companyType'],
-    },
-]);
+export const InvalidCompanyTypeException = new RpcException(
+    new BadRequestException([
+        { message: 'Error.InvalidCompanyType', path: ['companyType'] },
+    ])
+);
 
-export const UserAlreadyLinkedToProviderException = new UnprocessableEntityException([
-    {
-        message: 'Error.UserAlreadyLinkedToProvider',
-        path: ['userId'],
-    },
-]);
+export const UserAlreadyLinkedToProviderException = new RpcException(
+    new UnprocessableEntityException([
+        { message: 'Error.UserAlreadyLinkedToProvider', path: ['userId'] },
+    ])
+);

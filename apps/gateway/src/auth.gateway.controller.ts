@@ -11,17 +11,18 @@ import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Response } from 'express';
 import { handleZodError } from 'libs/common/helpers';
+import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
 import { ForgotPasswordBodyDTO, GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterBodyDTO, RegisterProviderBodyDto, RegisterResDTO, SendOTPBodyDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
-import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
+
 import { ZodSerializerDto } from 'nestjs-zod';
 import { lastValueFrom } from 'rxjs';
 @Controller('auth')
 export class AuthGatewayController {
     constructor(
-        @Inject(AUTH_SERVICE_NAME) private readonly authClient: ClientProxy
+        @Inject(AUTH_SERVICE) private readonly authClient: ClientProxy
     ) { }
     @IsPublic()
     @Post('register')

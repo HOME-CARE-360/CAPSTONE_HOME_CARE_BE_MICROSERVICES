@@ -14,7 +14,7 @@ import { handleZodError } from 'libs/common/helpers';
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
-import { ForgotPasswordBodyDTO, GetAuthorizationUrlResDTO, LoginResDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterBodyDTO, RegisterProviderBodyDto, RegisterResDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
+import { ForgotPasswordBodyDTO, GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterBodyDTO, RegisterProviderBodyDto, RegisterResDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
 import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
 import { ZodSerializerDto } from 'nestjs-zod';
 import { lastValueFrom } from 'rxjs';
@@ -53,7 +53,7 @@ export class AuthGatewayController {
     @IsPublic()
     @Post('login')
     @ZodSerializerDto(LoginResDTO)
-    async login(@Body() body: LoginResDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
+    async login(@Body() body: LoginBodyDTO, @UserAgent() userAgent: string, @Ip() ip: string) {
         try {
             const result = await lastValueFrom(
                 this.authClient.send({ cmd: 'login' }, { ...body, ip, userAgent })

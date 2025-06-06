@@ -12,7 +12,7 @@ import CustomZodValidationPipe from 'libs/common/src/pipes/custom-zod-validation
   imports: [CommonModule, ConfigModule,
 
   ],
-  controllers: [AuthController,],
+  controllers: [AuthController],
   providers: [AuthService, AuthReponsitory, GoogleService, {
     provide: APP_PIPE,
     useClass: CustomZodValidationPipe

@@ -14,7 +14,7 @@ import { handleZodError } from 'libs/common/helpers';
 import { IsPublic } from 'libs/common/src/decorator/auth.decorator';
 import { UserAgent } from 'libs/common/src/decorator/user-agent.decorator';
 import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
-import { ForgotPasswordBodyDTO, GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterBodyDTO, RegisterProviderBodyDto, RegisterResDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
+import { ForgotPasswordBodyDTO, GetAuthorizationUrlResDTO, LoginBodyDTO, LoginResDTO, LogoutBodyDTO, RefreshTokenBodyDTO, RefreshTokenResDTO, RegisterBodyDTO, RegisterProviderBodyDto, RegisterResDTO, SendOTPBodyDTO } from 'libs/common/src/request-response-type/auth/auth.dto';
 import { AUTH_SERVICE_NAME } from 'libs/common/src/types/auth';
 import { ZodSerializerDto } from 'nestjs-zod';
 import { lastValueFrom } from 'rxjs';
@@ -40,9 +40,9 @@ export class AuthGatewayController {
     }
     @IsPublic()
     @Post('otp')
-    async sendOTP(@Body() body: any) {
+    async sendOTP(@Body() body: SendOTPBodyDTO) {
         try {
-            return await lastValueFrom(this.authClient.send({ cmd: 'send-otp' }, body));
+            return await lastValueFrom(this.authClient.send({ cmd: 'otp' }, body));
         } catch (error) {
             console.log(error);
 

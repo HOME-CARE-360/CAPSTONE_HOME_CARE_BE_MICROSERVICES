@@ -33,8 +33,6 @@ export class AuthController {
   @MessagePattern({ cmd: 'login' })
   @IsPublic()
   login(body: LoginBodyDTO & { ip: string, userAgent: string }) {
-    console.log(body);
-
     return this.authService.login({
       ...body
     })
@@ -46,10 +44,12 @@ export class AuthController {
   @IsPublic()
   @HttpCode(HttpStatus.OK)
   @ZodSerializerDto(RefreshTokenResDTO)
-  refreshToken(@Body() body: RefreshTokenBodyDTO, ip: string, userAgent: string) {
+  refreshToken(@Body() body: RefreshTokenBodyDTO & {
+    ip: string, userAgent: string
+  }) {
 
     return this.authService.refreshToken({
-      refreshToken: body.refreshToken, userAgent, ip
+      refreshToken: body.refreshToken, ip: body.ip, userAgent: body.userAgent
     })
 
 

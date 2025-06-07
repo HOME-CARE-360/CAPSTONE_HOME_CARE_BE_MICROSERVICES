@@ -11,7 +11,10 @@
       }
     ],
     "moduleResolution": "node",
-    "types": ["node", "Multer"],
+    "types": [
+      "node",
+      "Multer"
+    ],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
@@ -30,10 +33,16 @@
     "paths": {}
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": [
+      "tsconfig-paths/register"
+    ]
   },
   "paths": {
-    "@app/common": ["libs/common/src"],
-    "@app/common/*": ["libs/common/src/*"]
+    "@app/common": [
+      "libs/common/src"
+    ],
+    "@app/common/*": [
+      "libs/common/src/*"
+    ]
   }
 }

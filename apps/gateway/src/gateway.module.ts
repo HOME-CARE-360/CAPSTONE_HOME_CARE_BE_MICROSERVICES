@@ -7,8 +7,9 @@ import { ConfigModule } from 'libs/common/src/modules/config.module';
 
 import { APP_PIPE } from '@nestjs/core';
 import CustomZodValidationPipe from 'libs/common/src/pipes/custom-zod-validation.pipe';
-import { AUTH_SERVICE, MANAGER_SERVICE } from 'libs/common/src/constants/service-name.constant';
+import { AUTH_SERVICE, MANAGER_SERVICE, MEDIA_SERVICE } from 'libs/common/src/constants/service-name.constant';
 import { ManagerGatewayController } from './manager.gateway.controller';
+import { MediaGatewayController } from './media.gateway.controller';
 
 @Module({
   imports: [CommonModule, ConfigModule,
@@ -27,10 +28,18 @@ import { ManagerGatewayController } from './manager.gateway.controller';
           host: process.env.MANAGER_HOST || 'localhost',
           port: parseInt(process.env.MANAGER_TCP_PORT || '3004'),
         },
+      },
+      {
+        name: MEDIA_SERVICE,
+        transport: Transport.TCP,
+        options: {
+          host: process.env.MEDIA_HOST || 'localhost',
+          port: parseInt(process.env.MEDIA_TCP_PORT || '3006'),
+        },
       }
     ]),
   ],
-  controllers: [AuthGatewayController, ManagerGatewayController],
+  controllers: [AuthGatewayController, ManagerGatewayController, MediaGatewayController],
   providers: [
     {
       provide: APP_PIPE,

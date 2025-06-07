@@ -52,6 +52,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/media/tsconfig.app.json"
       }
+    },
+    "provider": {
+      "type": "application",
+      "root": "apps/provider",
+      "entryFile": "main",
+      "sourceRoot": "apps/provider/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/provider/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,

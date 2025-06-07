@@ -8,10 +8,9 @@ import { ConfigModule } from 'libs/common/src/modules/config.module';
 import { APP_PIPE } from '@nestjs/core';
 import CustomZodValidationPipe from 'libs/common/src/pipes/custom-zod-validation.pipe';
 import { AUTH_SERVICE, MANAGER_SERVICE } from 'libs/common/src/constants/service-name.constant';
-import { AuthModule } from 'apps/auth/src/auth.module';
 
 @Module({
-  imports: [CommonModule, ConfigModule, AuthModule,
+  imports: [CommonModule, ConfigModule, AuthGatewayController,
     ClientsModule.register([
       {
         name: AUTH_SERVICE,

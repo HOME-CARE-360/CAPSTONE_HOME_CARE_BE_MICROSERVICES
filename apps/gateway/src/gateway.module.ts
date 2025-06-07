@@ -10,7 +10,7 @@ import CustomZodValidationPipe from 'libs/common/src/pipes/custom-zod-validation
 import { AUTH_SERVICE, MANAGER_SERVICE } from 'libs/common/src/constants/service-name.constant';
 
 @Module({
-  imports: [CommonModule, ConfigModule, AuthGatewayController,
+  imports: [CommonModule, ConfigModule,
     ClientsModule.register([
       {
         name: AUTH_SERVICE,

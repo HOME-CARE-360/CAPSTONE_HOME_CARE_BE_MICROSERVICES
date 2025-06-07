@@ -21,7 +21,6 @@ export class ManagerGatewayController {
             return await lastValueFrom(this.authClient.send({ cmd: 'change-status-provider' }, body));
         } catch (error) {
             console.log(error);
-
             handleZodError(error)
 
 

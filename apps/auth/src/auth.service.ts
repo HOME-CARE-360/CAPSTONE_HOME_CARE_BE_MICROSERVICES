@@ -159,8 +159,6 @@ export class AuthService {
 
         const isPasswordMatch = await this.hashingService.compare(body.password, user.password)
         if (!isPasswordMatch) {
-            console.log("loi cmnr");
-
             throw InvalidPasswordException
 
         }

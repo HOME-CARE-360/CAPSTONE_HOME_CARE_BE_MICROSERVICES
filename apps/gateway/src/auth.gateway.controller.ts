@@ -93,6 +93,7 @@ export class AuthGatewayController {
         }
 
     }
+    @ApiBody({ type: LogoutBodyDTO })
     @IsPublic()
     @Post('logout')
     @ZodSerializerDto(MessageResDTO)
@@ -108,6 +109,7 @@ export class AuthGatewayController {
         }
 
     }
+    @ApiBody({ type: ForgotPasswordBodyDTO })
     @IsPublic()
     @Post('forgot-password')
     @ZodSerializerDto(MessageResDTO)
@@ -160,6 +162,7 @@ export class AuthGatewayController {
             );
         }
     }
+    @ApiBody({ type: RegisterProviderBodyDto })
     @IsPublic()
     @Post('register-provider')
     @ZodSerializerDto(MessageResDTO)

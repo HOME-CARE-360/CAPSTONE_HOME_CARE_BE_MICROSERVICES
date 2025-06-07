@@ -15,9 +15,7 @@ import { TwoFactorService } from './services/2fa.service';
 import { SharedProviderRepository } from './repositories/share-provider.repo';
 import { SharedRoleRepository } from './repositories/shared-role.repo';
 import { S3Service } from './services/S3.service';
-import { ShareShiftTemplateRepository } from './repositories/shared-shift-template.repo';
 import { ShareStaffRepository } from './repositories/shared-staff.repo';
-import { SharedScheduleRepository } from './repositories/share-schedule.repo';
 import { SharedCategoryRepository } from './repositories/shared-category.repo';
 const sharedServices = [
   PrismaService,
@@ -31,9 +29,7 @@ const sharedServices = [
   SharedProviderRepository
   , SharedRoleRepository,
   S3Service,
-  ShareShiftTemplateRepository,
   ShareStaffRepository,
-  SharedScheduleRepository,
   SharedCategoryRepository
 
 ]

@@ -1,5 +1,5 @@
 
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { ZodSerializerDto } from 'nestjs-zod';
@@ -18,14 +18,14 @@ import { MessagePattern } from '@nestjs/microservices';
 @Controller('')
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly googleService: GoogleService, private configService: ConfigService) { }
-  @Post('register')
+  @MessagePattern({ cmd: 'register' })
   @IsPublic()
   @ZodSerializerDto(RegisterResDTO)
   async register(@Body() body: RegisterBodyDTO) {
     return await this.authService.register(body)
 
   }
-  @Post('otp')
+  @MessagePattern({ cmd: 'otp' })
   @IsPublic()
   async sendOTP(@Body() body: SendOTPBodyDTO) {
     return await this.authService.sendOTP(body)

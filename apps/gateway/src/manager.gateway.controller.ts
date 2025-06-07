@@ -9,7 +9,7 @@ import { ZodSerializerDto } from "nestjs-zod";
 import { lastValueFrom } from "rxjs";
 
 @Controller('manager')
-export class AuthGatewayController {
+export class ManagerGatewayController {
     constructor(
         @Inject(MANAGER_SERVICE) private readonly authClient: ClientProxy
     ) { }

@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiBody } from '@nestjs/swagger';
 import { Response } from 'express';
 import { handleZodError } from 'libs/common/helpers';
 import { AUTH_SERVICE } from 'libs/common/src/constants/service-name.constant';
@@ -24,6 +25,7 @@ export class AuthGatewayController {
     constructor(
         @Inject(AUTH_SERVICE) private readonly authClient: ClientProxy
     ) { }
+    @ApiBody({ type: RegisterBodyDTO })
     @IsPublic()
     @Post('register')
     @ZodSerializerDto(RegisterResDTO)
@@ -39,6 +41,7 @@ export class AuthGatewayController {
         }
 
     }
+    @ApiBody({ type: SendOTPBodyDTO })
     @IsPublic()
     @Post('otp')
     async sendOTP(@Body() body: SendOTPBodyDTO) {
@@ -51,6 +54,7 @@ export class AuthGatewayController {
         }
 
     }
+    @ApiBody({ type: LoginBodyDTO })
     @IsPublic()
     @Post('login')
     @ZodSerializerDto(LoginResDTO)
@@ -70,6 +74,7 @@ export class AuthGatewayController {
 
 
     }
+    @ApiBody({ type: RefreshTokenBodyDTO })
     @IsPublic()
     @Post('refresh-token')
     @ZodSerializerDto(RefreshTokenResDTO)

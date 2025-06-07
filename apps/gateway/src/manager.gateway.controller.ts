@@ -1,6 +1,6 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
-import { UpdateStatusProviderBodyDTO } from "apps/manager/src/managers.dto";
+import { UpdateStatusProviderBodyDTO } from "libs/common/src/request-response-type/manager/managers.dto";
 import { handleZodError } from "libs/common/helpers";
 import { MANAGER_SERVICE } from "libs/common/src/constants/service-name.constant";
 import { IsPublic } from "libs/common/src/decorator/auth.decorator";

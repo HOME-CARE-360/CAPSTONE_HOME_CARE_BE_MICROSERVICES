@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 
-import { UpdateStatusProviderBody } from "./manager.model";
+import { UpdateStatusProviderBody } from "libs/common/src/request-response-type/manager/manager.model";
 import { PrismaService } from "libs/common/src/services/prisma.service";
 
 

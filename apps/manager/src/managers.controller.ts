@@ -2,7 +2,7 @@ import { Controller, Body, Patch } from '@nestjs/common';
 import { ManagersService } from './managers.service';
 
 import { ZodSerializerDto } from 'nestjs-zod';
-import { UpdateStatusProviderBodyDTO } from './managers.dto';
+import { UpdateStatusProviderBodyDTO } from 'libs/common/src/request-response-type/manager/managers.dto';
 import { MessageResDTO } from 'libs/common/src/dtos/response.dto';
 import { ActiveUser } from 'libs/common/src/decorator/active-user.decorator';
 

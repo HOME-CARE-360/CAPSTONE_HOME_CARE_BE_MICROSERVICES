@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core'; import { ConfigService } from '@nest
 import { setApp } from './app';
 import { AppModule } from './gateway.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { patchNestJsSwagger } from 'nestjs-zod';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+  patchNestJsSwagger()
   const config = new DocumentBuilder()
     .setTitle('Home Care 360 API')
     .setDescription('The API for the home care 360 application')
